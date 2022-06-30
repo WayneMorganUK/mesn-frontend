@@ -13,7 +13,10 @@
 
 		const response = await fetch(URI, {
 			method: 'POST',
-			body: JSON.stringify(workout)
+			body: JSON.stringify(workout),
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		});
 		let json = await response.json();
 
