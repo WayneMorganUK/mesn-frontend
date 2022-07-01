@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { workouts } from './store';
-	import { flip } from 'svelte/animate';
+	import { flip } from 'svelte/animate'; // First, Last, Invert, Play
 	import { fly, fade } from 'svelte/transition';
 
 	const handleClick = async (id: Number) => {

@@ -1,38 +1,14 @@
-# create-svelte
+# A Workout app built using MongoDb, Express, Svelte and Node
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+Based on the MERN Stack Tutorial on [`YouTube`](https://www.youtube.com/watch?v=98BzS5Oz5E4&list=PL4cUxeGkcC9iJ_KkrkBZWZRHVwnzLIoUE) by 'The Net Ninja'. His code is available [`here`](https://github.com/iamshaunjp/MERN-Stack-Tutorial/tree/lesson-14)
 
-## Creating a project
+The backend code can be found here [`Mesn-Backend`](https://github.com/WayneMorganUK/mesn-backend)
 
-If you're seeing this, you've probably already done this step. Congrats!
+# To-Do
 
-```bash
-# create a new project in the current directory
-npm init svelte
+Add authentication
+Add Socket-IO and Change Stream
 
-# create a new project in my-app
-npm init svelte my-app
-```
+# Environment Varibles
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+VITE_MONGODB_URI='<https://your_serverless_function_address>/api/workouts'
