@@ -1,7 +1,7 @@
 const URI = import.meta.env.VITE_MONGODB_URI
 
-/**
- * @type {import('@sveltejs/kit').Load}
+/** 
+ * @type {import('@sveltejs/kit').RequestHandler} 
  */
 export async function get() {
     const response = await fetch(URI);

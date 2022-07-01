@@ -1,36 +1,33 @@
 <script lang="ts">
 	import { workouts } from '$lib/store';
-	let title = '';
-	let load = '';
-	let reps = '';
+	let title: string;
+	let load: number | null;
+	let reps: number | null;
 	let error: string | null = null;
 	let emptyFields: string | string[] = [];
-
-	const URI = import.meta.env.VITE_MONGODB_URI;
-
 	const handleSubmit = async () => {
 		const workout = { title, load, reps };
 
-		const response = await fetch(URI, {
-			method: 'POST',
-			body: JSON.stringify(workout),
+		const response = await fetch('../../apis/post', {
 			headers: {
 				'Content-Type': 'application/json'
-			}
+			},
+			method: 'POST',
+			body: JSON.stringify(workout)
 		});
-		let json = await response.json();
+		let data = await response.json();
 
 		if (!response.ok) {
-			error = json.error;
-			emptyFields = json.emptyFields;
+			error = data.json.error;
+			emptyFields = data.json.emptyFields;
 		}
 		if (response.ok) {
 			emptyFields = [];
 			error = null;
 			title = '';
-			load = '';
-			reps = '';
-			$workouts = [{ ...json }, ...$workouts];
+			load = null;
+			reps = null;
+			$workouts = [{ ...data.json }, ...$workouts];
 		}
 	};
 </script>

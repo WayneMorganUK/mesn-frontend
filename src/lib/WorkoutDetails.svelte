@@ -3,14 +3,16 @@
 	import { flip } from 'svelte/animate';
 	import { fly, fade } from 'svelte/transition';
 
-	const URI = import.meta.env.VITE_MONGODB_URI;
-
 	const handleClick = async (id: Number) => {
-		const response = await fetch(URI + '/' + id, {
-			method: 'DELETE'
+		const response = await fetch('../../apis/delete', {
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			method: 'POST',
+			body: JSON.stringify(id)
 		});
-		const json = await response.json();
-		console.log('Deleted', json._id);
+		let data = await response.json();
+		console.log('Deleted', data.json._id);
 
 		if (response.ok) {
 			$workouts = $workouts.filter((item) => item._id != id);
@@ -22,7 +24,7 @@
 	<div
 		class="workout-details"
 		animate:flip
-		in:fly={{ x: -800, duration: 2000, delay: 600 }}
+		in:fly={{ x: -800, duration: 1200, delay: 600 }}
 		out:fade
 	>
 		<h4>{workout.title}</h4>
