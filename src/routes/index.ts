@@ -12,4 +12,9 @@ export async function get() {
             body: { json: json }
         }
     }
+    else {
+        return {
+            status: 404
+        }
+    }
 }

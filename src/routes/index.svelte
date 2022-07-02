@@ -11,7 +11,7 @@
 	<div class="workouts">
 		<WorkoutDetails />
 	</div>
-	<WorkoutForm />
+	<div class="workout-form"><WorkoutForm /></div>
 </div>
 
 <style>
@@ -22,5 +22,28 @@
 		display: grid;
 		grid-template-columns: 3fr 1fr;
 		gap: 100px;
+	}
+	.workout-form {
+		min-width: 200px;
+	}
+
+	@media only screen and (max-width: 910px) {
+		.home {
+			gap: 60px;
+		}
+	}
+
+	@media only screen and (max-width: 760px) {
+		.home {
+			gap: 20px;
+		}
+	}
+	@media only screen and (max-width: 530px) {
+		.home {
+			grid-template-columns: 1fr;
+		}
+		.workouts {
+			grid-row-start: 2;
+		}
 	}
 </style>
