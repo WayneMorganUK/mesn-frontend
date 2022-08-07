@@ -1,41 +1,46 @@
 <script lang="ts">
-	import { workouts } from './store';
+	import { workouts, user } from './store';
 	import { flip } from 'svelte/animate'; // First, Last, Invert, Play
 	import { fly, fade } from 'svelte/transition';
 
-	const handleClick = async (id: Number) => {
-		const response = await fetch('../../apis/delete', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify(id)
-		});
-		let data = await response.json();
-		console.log('Deleted', data.json._id);
+	const handleClick = async (id: number) => {
+		if ($user) {
+			const token = $user.token;
+			const response = await fetch('../../apis/deleteWorkout', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({ id, token })
+			});
 
-		if (response.ok) {
-			$workouts = $workouts.filter((item) => item._id != id);
+			if (response.ok) {
+				if ($workouts) {
+					$workouts = $workouts.filter((item) => item._id != id);
+				}
+			}
 		}
 	};
 </script>
 
-{#each $workouts as workout (workout._id)}
-	<div
-		class="workout-details"
-		animate:flip
-		in:fly={{ x: -800, duration: 1200, delay: 600 }}
-		out:fade
-	>
-		<h4>{workout.title}</h4>
-		<p><strong>Load (kg): </strong>{workout.load}</p>
-		<p><strong>Number of reps: </strong>{workout.reps}</p>
-		<p>{workout.createdAt}</p>
-		<button on:click={() => handleClick(workout._id)}
-			><img class="bin" src="/trash.svg" alt="delete" /></button
+{#if $workouts}
+	{#each $workouts as workout (workout._id)}
+		<div
+			class="workout-details"
+			animate:flip
+			in:fly={{ x: -800, duration: 1200, delay: 600 }}
+			out:fade
 		>
-	</div>
-{/each}
+			<h4>{workout.title}</h4>
+			<p><strong>Load (kg): </strong>{workout.load}</p>
+			<p><strong>Number of reps: </strong>{workout.reps}</p>
+			<p>{workout.createdAt}</p>
+			<button on:click={() => handleClick(workout._id)}
+				><img class="bin" src="/trash.svg" alt="delete" /></button
+			>
+		</div>
+	{/each}
+{/if}
 
 <style>
 	.bin {

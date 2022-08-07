@@ -10,16 +10,21 @@ declare namespace App {
 }
 
 type Workouts = {
-	_id: Number;
-	title: String
-	createdAt: String
-	updatedAt: String
-	load: Number
-	reps: Number
-	__v: Number
+	_id: number;
+	title: string
+	createdAt: string
+	updatedAt: string
+	load: number
+	reps: number
+	__v: Nnmber
 }
 
 type ResponseError = {
-	error: String
+	error: string
 	emptyFields: Array<string>
+}
+
+type User = {
+	email: string;
+	token: string
 }

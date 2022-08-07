@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { workouts } from '$lib/store';
+	import { workouts, user } from '$lib/store';
 	let title: string;
 	let load: number | null;
 	let reps: number | null;
@@ -8,26 +8,35 @@
 	const handleSubmit = async () => {
 		const workout = { title, load, reps };
 
-		const response = await fetch('../../apis/post', {
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			method: 'POST',
-			body: JSON.stringify(workout)
-		});
-		let data = await response.json();
+		if ($user) {
+			const token = $user.token;
+			const response = await fetch('../../apis/addWorkout', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify({ workout, token })
+			});
+			const resp = await response.json();
 
-		if (!response.ok) {
-			error = data.json.error;
-			emptyFields = data.json.emptyFields;
-		}
-		if (response.ok) {
-			emptyFields = [];
-			error = null;
-			title = '';
-			load = null;
-			reps = null;
-			$workouts = [{ ...data.json }, ...$workouts];
+			if (!response.ok) {
+				error = resp.error;
+				emptyFields = resp.emptyFields;
+			}
+			if (response.ok) {
+				emptyFields = [];
+				error = null;
+				title = '';
+				load = null;
+				reps = null;
+				if ($workouts) {
+					$workouts = [{ ...resp }, ...$workouts];
+				} else {
+					$workouts = [{ ...resp }];
+				}
+			}
+		} else {
+			error = 'User does not exist';
 		}
 	};
 </script>
@@ -99,5 +108,6 @@
 	}
 	input.error {
 		border: 1px solid var(--error);
+		background: #ffefef;
 	}
 </style>

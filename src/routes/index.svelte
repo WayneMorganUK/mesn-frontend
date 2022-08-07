@@ -1,17 +1,40 @@
 <script lang="ts">
-	import { workouts } from '$lib/store';
+	import { goto } from '$app/navigation';
+	import { user, workouts, currentPage } from '$lib/store';
 	import WorkoutDetails from '$lib/WorkoutDetails.svelte';
 	import WorkoutForm from '$lib/WorkoutForm.svelte';
+	import { onMount } from 'svelte';
 
-	export let json: Workouts[];
-	$workouts = json;
+	$workouts = null;
+	onMount(async () => {
+		const _user = localStorage.getItem('user');
+		if (_user) {
+			const __user: User = JSON.parse(_user);
+			$user = __user;
+			const response = await fetch('./apis/getWorkouts', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				method: 'POST',
+				body: JSON.stringify($user.token)
+			});
+			if (response.ok) {
+				$workouts = await response.json();
+			}
+		} else {
+			goto('/login');
+		}
+	});
 </script>
 
 <div class="home">
-	<div class="workouts">
-		<WorkoutDetails />
-	</div>
-	<div class="workout-form"><WorkoutForm /></div>
+	{#if $user}
+		<div class="workouts">
+			<WorkoutDetails />
+		</div>
+
+		<div class="workout-form"><WorkoutForm /></div>
+	{/if}
 </div>
 
 <style>
