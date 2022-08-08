@@ -5,9 +5,13 @@
 	let reps: number | null;
 	let error: string | null = null;
 	let emptyFields: string | string[] = [];
+
+	let isSubmitting = false;
+
 	const handleSubmit = async () => {
 		const workout = { title, load, reps };
 
+		isSubmitting = true;
 		if ($user) {
 			const token = $user.token;
 			const response = await fetch('../../apis/addWorkout', {
@@ -38,6 +42,7 @@
 		} else {
 			error = 'User does not exist';
 		}
+		isSubmitting = false;
 	};
 </script>
 
@@ -69,7 +74,10 @@
 		class={emptyFields.includes('reps') ? 'error' : ''}
 	/>
 
-	<button type="submit" on:submit|preventDefault>Add Workout</button>
+	<button class:isSubmitting disabled={isSubmitting} type="submit" on:submit|preventDefault
+		>Add Workout</button
+	>
+
 	{#if error}
 		<div class="error">{error}</div>
 	{/if}
@@ -97,6 +105,9 @@
 		font-family: 'Poppins';
 		border-radius: 4px;
 		cursor: pointer;
+	}
+	.isSubmitting {
+		background: grey;
 	}
 	div.error {
 		padding: 10px;

@@ -20,13 +20,18 @@
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ email, password })
 		});
-		const resp = await response.json();
-		if (response.status === 200) {
-			$user = resp;
-			localStorage.setItem('user', JSON.stringify(resp));
-			goto('/');
+		if (response.status !== 500) {
+			console.log('response', response);
+			const resp = await response.json();
+			if (response.status === 200) {
+				$user = resp;
+				localStorage.setItem('user', JSON.stringify(resp));
+				goto('/');
+			} else {
+				error = resp.error;
+			}
 		} else {
-			error = resp.error;
+			error = 'Connection Error';
 		}
 	};
 </script>
