@@ -1,8 +1,9 @@
+import type { RequestHandler } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 const URI = import.meta.env.VITE_MONGODB_URI
-/** 
- * @type {import('@sveltejs/kit').RequestHandler} 
- */
-export async function post({ request }: { request: Request; }) {
+
+
+export const POST: RequestHandler = async ({ request }) => {
 	try {
 		const { workout, token } = await request.json();
 		const response = await fetch(URI + 'workouts/', {
@@ -15,19 +16,13 @@ export async function post({ request }: { request: Request; }) {
 		});
 		const json = await response.json()
 		if (response.ok) {
-			return {
-				status: 200,
-				body: json
-			}
-		}
-		return {
-			status: 404,
-			body: json
-		}
-	} catch {
-		return {
-			status: 500,
-			body: 'Connection Error'
-		}
-	}
+            return new Response(String(JSON.stringify(json)));
+        }
+        throw error(404, json)
+
+    }
+    catch {
+        throw error(500, 'connection error');
+    }
 }
+

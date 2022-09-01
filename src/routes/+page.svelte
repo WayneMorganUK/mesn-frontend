@@ -3,9 +3,13 @@
 	import { user, workouts, currentPage } from '$lib/store';
 	import WorkoutDetails from '$lib/WorkoutDetails.svelte';
 	import WorkoutForm from '$lib/WorkoutForm.svelte';
-	import { onMount } from 'svelte';
+	import { getContext, onMount, setContext } from 'svelte';
 
-	$workouts = null;
+	setContext('store', $workouts);
+
+	const store = getContext('store');
+
+	console.log('store', { store });
 	onMount(async () => {
 		const _user = localStorage.getItem('user');
 		if (_user) {

@@ -7,7 +7,7 @@
 	$currentPage = $page.url.pathname;
 	let email: string = '';
 	let password: string = '';
-	let error: string = '';
+	let loginError: string = '';
 	onMount(async () => {
 		const _user = localStorage.getItem('user');
 		if (_user) {
@@ -20,6 +20,8 @@
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ email, password })
 		});
+		console.log(response);
+
 		if (response.status !== 500) {
 			const resp = await response.json();
 			if (response.status === 200) {
@@ -27,10 +29,10 @@
 				localStorage.setItem('user', JSON.stringify(resp));
 				goto('/');
 			} else {
-				error = resp.error;
+				loginError = resp.error;
 			}
 		} else {
-			error = 'Connection Error';
+			loginError = 'Connection Failed';
 		}
 	};
 </script>
@@ -45,14 +47,14 @@
 		on:change={() => email}
 		bind:value={email}
 		required
-		on:invalid={() => (error = 'Please enter a valid email address')}
+		on:invalid={() => (loginError = 'Please enter a valid email address')}
 	/>
 	<label for="password">Password:</label>
 	<input class="password" type="password" on:change={() => password} bind:value={password} />
 
 	<button>Log in</button>
-	{#if error}
-		<div class="error">{error}</div>
+	{#if loginError}
+		<div class="error">{loginError}</div>
 	{/if}
 </form>
 
