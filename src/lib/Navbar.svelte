@@ -12,7 +12,7 @@
 <header>
 	<div class="container">
 		<a href="/">
-			<h1>Workout Buddy</h1>
+			<h1>Workout Buddy, {currentPage}</h1>
 		</a>
 		<nav>
 			{#if $user}
