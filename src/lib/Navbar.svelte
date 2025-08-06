@@ -18,7 +18,7 @@
 			{#if $user}
 				<div>
 					<span>{$user.email}</span>
-					<button on:click={handleClick}>Log out</button>
+					<button onclick={handleClick}>Log out</button>
 				</div>
 			{/if}
 			{#if !$user}

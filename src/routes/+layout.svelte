@@ -1,5 +1,10 @@
 <script lang="ts">
 	import Navbar from '$lib/Navbar.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <svelte:head>
@@ -10,7 +15,7 @@
 
 <Navbar />
 
-<slot />
+{@render children?.()}
 
 <style>
 	:global(:root) {

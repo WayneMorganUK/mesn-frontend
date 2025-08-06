@@ -1,13 +1,17 @@
+<!-- @migration-task Error while migrating Svelte code: Imports of `svelte/internal/*` are forbidden. It contains private runtime code which is subject to change without notice. If you're importing from `svelte/internal/*` to work around a limitation of Svelte, please open an issue at https://github.com/sveltejs/svelte and explain your use case
+https://svelte.dev/e/import_svelte_internal_forbidden -->
 <script lang="ts">
+	// import { preventDefault } from 'svelte/legacy';
+
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte/internal';
+	import { onMount } from 'svelte';
 	import { user, currentPage } from '$lib/store';
 	import { page } from '$app/stores';
 
 	$currentPage = $page.url.pathname;
-	let email: string = '';
-	let password: string = '';
-	let loginError: string = '';
+	let email: string = $state('');
+	let password: string = $state('');
+	let loginError: string = $state('');
 	onMount(async () => {
 		const _user = localStorage.getItem('user');
 		if (_user) {
@@ -37,20 +41,20 @@
 	};
 </script>
 
-<form class="login" on:submit|preventDefault={handleSubmit}>
+<form class="login" onsubmit={handleSubmit}>
 	<h3>Log In</h3>
 
 	<label for="email">Email address:</label>
 	<input
 		class="email"
 		type="email"
-		on:change={() => email}
+		onchange={() => email}
 		bind:value={email}
 		required
-		on:invalid={() => (loginError = 'Please enter a valid email address')}
+		oninvalid={() => (loginError = 'Please enter a valid email address')}
 	/>
 	<label for="password">Password:</label>
-	<input class="password" type="password" on:change={() => password} bind:value={password} />
+	<input class="password" type="password" onchange={() => password} bind:value={password} />
 
 	<button>Log in</button>
 	{#if loginError}

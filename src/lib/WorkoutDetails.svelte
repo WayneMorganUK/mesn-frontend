@@ -28,14 +28,14 @@
 		<div
 			class="workout-details"
 			animate:flip
-			in:fly={{ x: -800, duration: 1200, delay: 600 }}
-			out:fade
+			in:fly|global={{ x: -800, duration: 1200, delay: 600 }}
+			out:fade|global
 		>
 			<h4>{workout.title}</h4>
 			<p><strong>Load (kg): </strong>{workout.load}</p>
 			<p><strong>Number of reps: </strong>{workout.reps}</p>
 			<p>{workout.createdAt}</p>
-			<button on:click={() => handleClick(workout._id)}
+			<button onclick={() => handleClick(workout._id)}
 				><img class="bin" src="/trash.svg" alt="delete" /></button
 			>
 		</div>

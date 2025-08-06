@@ -19,11 +19,11 @@ export const POST: RequestHandler = async ({ request }) => {
         if (response.ok) {
             return new Response(String(JSON.stringify(json)));
         }
-        throw error(404, json)
+        error(404, json);
 
     }
     catch {
-        throw error(500, 'connection error');
+        error(500, 'connection error');
     }
 }
 

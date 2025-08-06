@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { workouts, user } from '$lib/store';
-	let title: string;
-	let load: number | null;
-	let reps: number | null;
-	let error: string | null = null;
-	let emptyFields: string | string[] = [];
+	import { preventDefault, createBubbler } from 'svelte/legacy';
 
-	let isSubmitting = false;
+	const bubble = createBubbler();
+	import { workouts, user } from '$lib/store';
+	let title = $state();
+	let load = $state();
+	let reps = $state();
+	let error: string | null = $state(null);
+	let emptyFields: string | string[] = $state([]);
+
+	let isSubmitting = $state(false);
 
 	const handleSubmit = async () => {
 		const workout = { title, load, reps };
@@ -46,13 +49,13 @@
 	};
 </script>
 
-<form class="create" on:submit|preventDefault={handleSubmit}>
+<form class="create" onsubmit={handleSubmit}>
 	<h3>Add a New Workout</h3>
 
 	<label for="title">Exercise Title:</label>
 	<input
 		type="text"
-		on:change={() => title}
+		onchange={() => title}
 		bind:value={title}
 		class={emptyFields.includes('title') ? 'error' : ''}
 	/>
@@ -60,7 +63,7 @@
 	<label for="load">Load (in kg):</label>
 	<input
 		type="number"
-		on:change={() => load}
+		onchange={() => load}
 		bind:value={load}
 		class={emptyFields.includes('load') ? 'error' : ''}
 	/>
@@ -69,12 +72,12 @@
 
 	<input
 		type="number"
-		on:change={() => reps}
+		onchange={() => reps}
 		bind:value={reps}
 		class={emptyFields.includes('reps') ? 'error' : ''}
 	/>
 
-	<button class:isSubmitting disabled={isSubmitting} type="submit" on:submit|preventDefault
+	<button class:isSubmitting disabled={isSubmitting} type="submit" onsubmit={bubble('submit')}
 		>Add Workout</button
 	>
 
